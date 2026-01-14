@@ -1,5 +1,8 @@
 name: Selenium CI Pipeline
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [ "main" ]
@@ -43,7 +46,7 @@ jobs:
     if: always()
 
     steps:
-      - name: Checkout main branch
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -54,17 +57,16 @@ jobs:
           name: ExtentReport
           path: report
 
-      - name: Publish to gh-pages
+      - name: Publish Extent Report to GitHub Pages
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-          # Create gh-pages branch if not exists
           git checkout --orphan gh-pages || git checkout gh-pages
 
           git rm -rf .
           cp report/index.html index.html
 
           git add index.html
-          git commit -m "Update Extent Report" || echo "No changes to commit"
+          git commit -m "Update Extent Report" || echo "No changes"
           git push origin gh-pages --force
