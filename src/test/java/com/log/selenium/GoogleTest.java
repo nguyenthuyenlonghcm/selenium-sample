@@ -9,6 +9,6 @@ public class GoogleTest extends BaseTest {
     public void verifyGoogleTitle() {
         getDriver().get("https://www.google.com");
         String title = getDriver().getTitle();
-        Assert.assertEquals(title, "Google");
+        Assert.assertEquals(title, "Google999");
     }
 }
