@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Selenium Sample Suite">
+    <listeners>
+        <listener class-name="com.log.selenium.listeners.ExtentTestListener"/>
+    </listeners>
+
+    <test name="Google Test">
+        <classes>
+            <class name="com.log.selenium.GoogleTest"/>
+        </classes>
+    </test>
+</suite>
