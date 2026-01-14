@@ -68,6 +68,6 @@ jobs:
           cp report/index.html index.html
           cp -r report/screenshots screenshots
 
-          git add index.html
-          git commit -m "Update Extent Report" || echo "No changes"
+          git add .
+          git commit -m "Update Extent Report with screenshots" || echo "No changes"
           git push origin gh-pages --force
