@@ -4,6 +4,7 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.log.selenium.base.BaseTest;
 import com.log.selenium.utils.ExtentManager;
+import com.log.selenium.utils.ExtentTestManager;
 import com.log.selenium.utils.ScreenshotUtils;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
@@ -19,22 +20,22 @@ public class ExtentTestListener implements ITestListener {
     public void onTestStart(ITestResult result) {
         ExtentTest extentTest =
                 extent.createTest(result.getMethod().getMethodName());
-        test.set(extentTest);
+
+        ExtentTestManager.setTest(extentTest);
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        test.get().pass("Test PASSED");
+        ExtentTestManager.getTest().pass("Test PASSED");
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        test.get().fail(result.getThrowable());
+
+        ExtentTestManager.getTest().fail(result.getThrowable());
 
         Object testClass = result.getInstance();
-
-        WebDriver driver =
-                ((BaseTest) testClass).getDriver();
+        WebDriver driver = ((BaseTest) testClass).getDriver();
 
         String screenshotPath =
                 ScreenshotUtils.takeScreenshot(
@@ -42,7 +43,8 @@ public class ExtentTestListener implements ITestListener {
                         result.getMethod().getMethodName()
                 );
 
-        test.get().addScreenCaptureFromPath(screenshotPath);
+        ExtentTestManager.getTest()
+                .addScreenCaptureFromPath(screenshotPath);
     }
 
     @Override
