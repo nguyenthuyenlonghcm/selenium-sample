@@ -66,6 +66,7 @@ jobs:
 
           git rm -rf .
           cp report/index.html index.html
+          cp -r report/screenshots screenshots
 
           git add index.html
           git commit -m "Update Extent Report" || echo "No changes"

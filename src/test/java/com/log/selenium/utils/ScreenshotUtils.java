@@ -22,8 +22,10 @@ public class ScreenshotUtils {
 
         new File(screenshotDir).mkdirs();
 
+        String fileName = testName + "_" + timestamp + ".png";
+
         String screenshotPath =
-                screenshotDir + "/" + testName + "_" + timestamp + ".png";
+                screenshotDir + "/" + fileName;
 
         File src = ((TakesScreenshot) driver)
                 .getScreenshotAs(OutputType.FILE);
@@ -34,6 +36,6 @@ public class ScreenshotUtils {
             e.printStackTrace();
         }
 
-        return screenshotPath;
+        return "screenshots/" + fileName;
     }
 }
