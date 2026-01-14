@@ -3,6 +3,7 @@ package com.log.selenium.utils;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,11 +13,11 @@ public class ExtentManager {
 
     public static ExtentReports getExtent() {
         if (extent == null) {
+            String reportDir = System.getProperty("user.dir") + "/test-output";
 
-            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            new File(reportDir).mkdirs();
 
-            String reportPath = System.getProperty("user.dir")
-                    + "/test-output/ExtentReport_" + timestamp + ".html";
+            String reportPath = reportDir + "/index.html";
 
             ExtentSparkReporter spark = new ExtentSparkReporter(reportPath);
             spark.config().setReportName("Automation Test Report");

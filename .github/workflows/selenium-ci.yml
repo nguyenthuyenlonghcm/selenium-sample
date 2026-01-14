@@ -27,6 +27,9 @@ jobs:
           key: maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: maven-
 
+      - name: Run Selenium Tests
+        run: mvn clean test
+
       - name: Upload Extent Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -34,5 +37,37 @@ jobs:
           name: ExtentReport
           path: test-output
 
-      - name: Run Selenium Tests
-        run: mvn clean test
+  publish-report:
+    needs: selenium-test
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+          fetch-depth: 0
+        continue-on-error: true
+
+      - name: Download Extent Report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ExtentReport
+          path: report
+
+      - name: Prepare GitHub Pages content
+        run: |
+          mkdir -p gh-pages
+          rm -rf gh-pages/*
+          cp report/index.html gh-pages/index.html
+
+      - name: Commit & push report to gh-pages
+        run: |
+          cd gh-pages
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Update Extent Report" || echo "No changes to commit"
+          git push origin gh-pages
